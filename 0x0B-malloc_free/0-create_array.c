@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "holberton.h"
 /**
  * create_array - create array
  * @size: size
@@ -8,21 +9,19 @@
  */
 char *create_array(unsigned int size, char c)
 {
-	char *p;
-	unsigned int i;
+	char *array;
+	unsigned int index;
 
 	if (size == 0)
-	{
-		return (0);
-	}
-	p = malloc((size) * sizeof(char));
-	if (p == '\0')
-	{
-		return (0);
-	}
-	for (i = 0; i < size; i++)
-	{
-		p[i] = c;
-	}
-return (p);
+		return (NULL);
+
+	array = malloc(sizeof(char) * size);
+
+	if (array == NULL)
+		return (NULL);
+
+	for (index = 0; index < size; index++)
+		array[index] = c;
+
+	return (array);
 }
