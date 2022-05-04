@@ -2,46 +2,44 @@
 #include <stdlib.h>
 
 /**
- * alloc_grid - Returns a pointer to a 2-dimensional array of
- *               integers with each element initalized to 0.
- * @width: The width of the 2-dimensional array.
- * @height: The height of the 2-dimensional array.
+ * argstostr - Concatenates all arguments of the program into a string;
+ *             arguments are separated by a new line in the string.
+ * @ac: The number of arguments passed to the program.
+ * @av: An array of pointers to the arguments.
  *
- * Return: If width <= 0, height <= 0, or the function fails - NULL.
- *         Otherwise - a pointer to the 2-dimensional array of integers.
+ * Return: If ac == 0, av == NULL, or the function fails - NULL.
+ *         Otherwise - a pointer to the new string.
  */
-int **alloc_grid(int width, int height)
+char *argstostr(int ac, char **av)
 {
-	int **twoD;
-	int hgt_index, wid_index;
+	char *str;
+	int arg, byte, index, size = ac;
 
-	if (width <= 0 || height <= 0)
+	if (ac == 0 || av == NULL)
 		return (NULL);
 
-	twoD = malloc(sizeof(int *) * height);
+	for (arg = 0; arg < ac; arg++)
+	{
+		for (byte = 0; av[arg][byte]; byte++)
+			size++;
+	}
 
-	if (twoD == NULL)
+	str = malloc(sizeof(char) * size + 1);
+
+	if (str == NULL)
 		return (NULL);
 
-	for (hgt_index = 0; hgt_index < height; hgt_index++)
+	index = 0;
+
+	for (arg = 0; arg < ac; arg++)
 	{
-		twoD[hgt_index] = malloc(sizeof(int) * width);
+		for (byte = 0; av[arg][byte]; byte++)
+			str[index++] = av[arg][byte];
 
-		if (twoD[hgt_index] == NULL)
-		{
-			for (; hgt_index >= 0; hgt_index--)
-				free(twoD[hgt_index]);
-
-			free(twoD);
-			return (NULL);
-		}
+		str[index++] = '\n';
 	}
 
-	for (hgt_index = 0; hgt_index < height; hgt_index++)
-	{
-		for (wid_index = 0; wid_index < width; wid_index++)
-			twoD[hgt_index][wid_index] = 0;
-	}
+	str[size] = '\0';
 
-	return (twoD);
+	return (str);
 }
