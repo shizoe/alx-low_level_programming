@@ -1,65 +1,47 @@
-#include <stdio.h>
 #include "holberton.h"
+#include <stdlib.h>
 
 /**
- * _strlen - length of a string
- * @s: input char
- * Return: length of a string
+ * alloc_grid - Returns a pointer to a 2-dimensional array of
+ *               integers with each element initalized to 0.
+ * @width: The width of the 2-dimensional array.
+ * @height: The height of the 2-dimensional array.
+ *
+ * Return: If width <= 0, height <= 0, or the function fails - NULL.
+ *         Otherwise - a pointer to the 2-dimensional array of integers.
  */
-
-int _strlen(char *s)
+int **alloc_grid(int width, int height)
 {
-	int l = 0;
+	int **twoD;
+	int hgt_index, wid_index;
 
-	while (*s != '\0')
-	{
-		s++;
-		l++;
-	}
-	return (l);
-}
-
-/**
- * argstostr - concat
- * @ac: count
- * @av: vector
- * Return: string
- */
-
-char *argstostr(int ac, char **av)
-{
-	int i, j, k;
-	int len, R = 0;
-	char *p;
-
-	if (!ac || !av)
-	{
+	if (width <= 0 || height <= 0)
 		return (NULL);
-	}
-	R = 0;
 
-	for (i = 0; i < ac; i++)
-	{
-		len = _strlen(av[i]) + 1;
-		R += len;
-	}
-	p = malloc(sizeof(char) * R + 1);
+	twoD = malloc(sizeof(int *) * height);
 
-	if (!p)
-	{
+	if (twoD == NULL)
 		return (NULL);
-	}
 
-	for (i = 0; i < ac; i++)
+	for (hgt_index = 0; hgt_index < height; hgt_index++)
 	{
-		len = _strlen(av[i]);
+		twoD[hgt_index] = malloc(sizeof(int) * width);
 
-		for (j = 0; j < len; j++, k++)
+		if (twoD[hgt_index] == NULL)
 		{
-			p[k] = av[i][j];
+			for (; hgt_index >= 0; hgt_index--)
+				free(twoD[hgt_index]);
+
+			free(twoD);
+			return (NULL);
 		}
-		p[k++] = '\n';
 	}
-	p[k] = '\0';
-	return (p);
+
+	for (hgt_index = 0; hgt_index < height; hgt_index++)
+	{
+		for (wid_index = 0; wid_index < width; wid_index++)
+			twoD[hgt_index][wid_index] = 0;
+	}
+
+	return (twoD);
 }
